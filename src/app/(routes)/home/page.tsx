@@ -62,22 +62,22 @@ export default function HomePage() {
             <FieldArray
               name="matches"
               render={(arrayHelpers) => (
-                <div className="border rounded-lg p-4 w-fit bg-white">
-                  <table border={2}>
+                <div className="border rounded-lg p-4 w-fit bg-white ">
+                  <table border={2} className="min-w-[500px]">
                     <thead className="text-sm">
                       <tr>
-                        <th></th>
-                        <th className="text-left">Team 1</th>
-                        <th className="text-left"></th>
-                        <th className="text-left">Team 2</th>
-                        <th className="text-left">Betfair price</th>
+                        <th className="w-[25px]"></th>
+                        <th className="text-left w-[125px]">Team 1</th>
+                        <th className="w-[30px]"></th>
+                        <th className="text-left w-[125px]">Team 2</th>
+                        <th className="text-left w-[100px]">Betfair price</th>
                         <th className="text-left"></th>
                       </tr>
                     </thead>
                     <tbody>
                       {values.matches.map((match, index) => (
                         <tr key={index}>
-                          <td className="text-sm px-4">{index + 1}</td>
+                          <td className="text-sm w-[25px]">{index + 1}</td>
                           <td className="text-xs">
                             <Field
                               name={`matches.${index}.team1`}
@@ -101,7 +101,7 @@ export default function HomePage() {
                               name={`matches.${index}.betfairLay`}
                               value={match.betfairLay}
                               type="number"
-                              className="w-12 focus:bg-white"
+                              className="w-[100px] focus:bg-white"
                             />
                           </td>
                           <td
