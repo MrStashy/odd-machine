@@ -4,19 +4,12 @@ import { dummyCouponData } from "@/app/_utils/dummyCouponData";
 import { betFredMults } from "@/app/_utils/betFredMults";
 import { Formik, FieldArray, Field } from "formik";
 import { useState } from "react";
-import { match } from "assert";
-
-type Match = {
-  team1: string;
-  team2: string;
-  betfairLay: number;
-};
-
-type Triple = [Match, Match, Match];
+import type { Match } from "@/app/_utils/types/match";
+import TrebleDisplay from "@/app/components/TrebleDisplay";
 
 export default function HomePage() {
   const [matches, setMatches] = useState<Match[]>(dummyCouponData);
-  const [trebles, setTrebles] = useState<Triple[] | null>(null);
+  const [trebles, setTrebles] = useState<Match[][] | null>(null);
 
   function handleFindTriples() {
     const results = [];
@@ -25,9 +18,7 @@ export default function HomePage() {
 
     for (let i = 0; i < newMatches.length; i++) {
       const currentTriple = [];
-
       const matchToCompare1 = newMatches[i];
-
       currentTriple.push(matchToCompare1);
 
       for (let j = i; j < newMatches.length; j++) {
@@ -35,38 +26,30 @@ export default function HomePage() {
           continue;
         }
         const matchToCompare2 = newMatches[j];
-        if (
-          matchToCompare1.betfairLay + matchToCompare2.betfairLay <
-          betFredMults.treble
-        ) {
-          currentTriple.push(matchToCompare2);
-        }
+        currentTriple.push(matchToCompare2);
 
         for (let k = j; k < newMatches.length; k++) {
           if (k === j || k === i) {
             continue;
           }
           const matchToCompare3 = newMatches[k];
-
-          if (
-            matchToCompare1.betfairLay +
-              matchToCompare2.betfairLay +
-              matchToCompare3.betfairLay <
-            betFredMults.treble
-          ) {
-            currentTriple.push(matchToCompare3);
-            results.push(currentTriple);
-            currentTriple.pop();
-          }
+          currentTriple.push(matchToCompare3);
+          results.push([...currentTriple]);
+          currentTriple.pop();
         }
         currentTriple.pop();
       }
     }
-    // console.log(results);
+    const filteredResults = results.filter(
+      (treble) =>
+        treble.reduce((a, c) => a * c.betfairLay, 1) < betFredMults.treble
+    );
+
+    setTrebles(filteredResults);
   }
 
   return (
-    <div className="bg-slate-100 h-screen">
+    <div className="">
       <Formik
         initialValues={{ matches: dummyCouponData }}
         onSubmit={(values) => {
@@ -166,10 +149,11 @@ export default function HomePage() {
       </Formik>
       <button
         onClick={() => handleFindTriples()}
-        className="mt-4 border w-fit text-center rounded-lg p-6 shadow-lg cursor-pointer bg-white"
+        className="my-4 border w-fit text-center rounded-lg p-6 shadow-lg cursor-pointer bg-white"
       >
         Find me some trebles
       </button>
+      {trebles && <TrebleDisplay trebles={trebles} />}
     </div>
   );
 }
