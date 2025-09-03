@@ -62,7 +62,7 @@ export default function HomePage() {
             <FieldArray
               name="matches"
               render={(arrayHelpers) => (
-                <div className="border rounded-lg p-4 w-fit">
+                <div className="border rounded-lg p-4 w-fit bg-white">
                   <table border={2}>
                     <thead className="text-sm">
                       <tr>
