@@ -49,7 +49,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="">
+    <div>
       <Formik
         initialValues={{ matches: dummyCouponData }}
         onSubmit={(values) => {
