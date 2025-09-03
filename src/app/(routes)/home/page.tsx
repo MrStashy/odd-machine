@@ -13,7 +13,6 @@ export default function HomePage() {
 
   function handleFindTriples() {
     const results = [];
-
     const newMatches = [...matches];
 
     for (let i = 0; i < newMatches.length; i++) {
@@ -44,7 +43,6 @@ export default function HomePage() {
       (treble) =>
         treble.reduce((a, c) => a * c.betfairLay, 1) < betFredMults.treble
     );
-
     setTrebles(filteredResults);
   }
 
